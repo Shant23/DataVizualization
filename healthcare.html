@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<title>Project(home)</title>
+	<link rel="stylesheet" type="text/css" href="style/design.css"/>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript">
+	//load the google charts/
+	google.charts.load('current',{'packages':['corechart']});
+	//load the callback function running the page
+	google.charts.setOnLoadCallback(drawAllSheets);
+	
+	function drawAllSheets() {
+		drawSheetName('current health exp', 'SELECT A,K', healthexpResponseHandler);
+		drawSheetName('per capita health exp $', 'SELECT A,I,J,K', percapitahealthexpResponseHandler);
+		drawSheetName('per capita health exp $', 'SELECT A,L', totalhealthexpResponseHandler);
+		drawSheetName('total health exp and hosp beds', 'SELECT A, C, D', bedpercapitahealthexpResponseHandler);
+		drawSheetName('DM prevalence', 'SELECT A, M', diabetesResponseHandler)
+		}//drawAllSheets
+	
+	
+	function drawSheetName(sheetName, query, responseHandler) {
+		var queryString = encodeURIComponent(query);
+		var query = new google.visualization.Query(
+		'https://docs.google.com/spreadsheets/d/1-u2mVw1SImdi2KQ6HPrVeYDoyxEZ70E1D0nETxWzDJU/gviz/tq?sheet=' +sheetName + '&headers=1&tq=' +queryString);
+		query.send(responseHandler);
+		
+		
+		}//drawsheetname
+		
+	function healthexpResponseHandler(response){
+		var data = response.getDataTable();
+		var options = {	height:750, title:"Healthcare expenditure in 2015 as percent of GDP", magnifyingGlass: {enable: true, zoomFactor: 5.0}, colorAxis:{colors:['#ADD8E6', '#00008B']}
+						};
+			
+		var chart = new google.visualization.GeoChart(
+			document.getElementById('healthexp_div'));
+			
+			chart.draw(data, options); } //healthcare expenditure
+			
+					
+			
+	function percapitahealthexpResponseHandler(response){
+		var data = response.getDataTable();
+		data.sort({column:3, desc: true});
+		var options = {	height:850, title:"Per Capita Healthcare expenditure in 2015 in US Dollars"};
+						
+		var chart = new google.visualization.ColumnChart(
+			document.getElementById('percapita_healthexp_div'));
+			
+			chart.draw(data, options); } //healthcare expenditure
+			
+	function totalhealthexpResponseHandler(response){
+		var data= response.getDataTable();		
+		data.sort({column:1, desc: true});
+        var options = {height:850,title: 'Total healthcare expenditure in USD'}; 
+		var chart = new google.visualization.ColumnChart(document.getElementById('domestic_healthexp_div'));
+		chart.draw(data, options);
+ 
+	}//totalhealthexpResponseHandler
+	
+	
+	function bedpercapitahealthexpResponseHandler(response){
+		var data = response.getDataTable();
+		 var options = { height: 750,
+        title: 'Correlation between number of hospital bedds per 1000 and healthcare spending per capita ' +
+               'and G20 countries (2012)',
+        hAxis: {title: 'hospital beds'},
+        vAxis: {title: 'per capita healthcare expenditure'},
+        bubble: {textStyle: {fontSize: 11}}
+      };
+
+      var chart = new google.visualization.BubbleChart(document.getElementById('series_chart_div'));
+      chart.draw(data, options);
+    }//hosp bed and per capita exp
+	
+	
+	function diabetesResponseHandler(response){
+		var data = response.getDataTable();
+		var options = {	height:750, title:"Diabetes Mellitus prevalence accross the G20 in 2017", magnifyingGlass: {enable: true, zoomFactor: 5.0}, colorAxis:{colors:['#ADD8E6', '#00008B']}
+						};
+			
+		var chart = new google.visualization.GeoChart(
+			document.getElementById('diabetespre_div'));
+			
+			chart.draw(data, options); } //healthcare expenditure
+	
+	
+</script>	
+</head>
+
+<body>
+	<div id="main">
+		<div id="header">
+			<div id="logo">
+				<div id="logo-rectangle">
+					<div id= "logo_text">
+						<h1> The State of the G20<span class='logo_color'></span></h1>
+						<h2> Healthcare, Education and Military Spending in the G20</h2>
+					</div><!--logotext-->
+				</div><!--logo-rectangle-->
+			</div><!--logo-->
+		<div id = "menubar">
+				<ul id="menu">
+					<li><a href="index2.html">Home</a></li>
+					<li class='selected'><a href="healthcare.html">Healthcare Spending</a></li>
+					<li><a href="education.html">Education Spending</a></li>
+					<li><a href="military.html">Military Spending</a></li>
+					<li><a href="combined.html">Insights</a></li>						
+				</ul>
+			</div><!--menubar-->
+		</div><!--header-->
+		
+	<div id = "site_content">
+		<div class = "sidebar">
+			<h3>Data Sources</h3>
+			<ul>
+				<li><a href="https://databank.worldbank.org/data/home.aspx" class="selected">The World Bank</a></li>
+				<li><a href="https://www.who.int/">The World Health Organization</a></li>
+				<li><a href="https://humanprogress.org/finddata">HumanProgress.org</a></li>
+				
+			</ul>
+		</div><!--sidebar-->
+
+		<div id ="content">
+			<h3>Healthcare expendiure in the G20</h3>
+			<p>
+				The landscape of healthcare expenditure in the G20 varies widely as illustrated in the following graphics. Healthcare expenditure covers everything from acute inpatient care, to access to primary care services, to urgent/emergent services,
+				medications, as well as long term care. Healthcare expenditure is examined at first as the percentage of GDP. 				
+			</p></br>
+			<p> Most current healthcare expenditure data, from 2015, accross the G20, as a percent of GDP</p>
+			<div id='healthexp_div' style='width:1200px; height 750px;'></div></br>
+			<p>The per Capita healthcare expenditure may be more telling as it provides further insight into the relative amount each governement spends on healthcare for every citizen.</p></br>
+			<div id='percapita_healthexp_div'  style='width:1200px; height 900px;'></div></br>
+			<p>Switzerland and the United States are the lead in terms of per capita healthcare expenditure. The following graphic illustrates the absolute amount in dollars that is spent on healthcare. The US is clearly in the lead. </p></br>
+			<p>Another way of looking at healthcare expedniture is to see the overall number of hospital beds available for every 1000 citizens and compare that to the per capita healthcare spending. </p></br>
+			<div id='series_chart_div' style='width:1200px; height 900px;'></div></br>
+			<p>In this graphic comparing the United States and Japan is intersting. Both countries seem to have a comparable per capita healthcare spending, but Japan has 7 times more beds than the US. From the available data
+			one may not know abstract the cause.</p></br>
+			<p>Another improtant indicator for both healthcare spending and health assocaited outcomes is to look at the prevalence of diabetes in each of these countries. The following graphic illustrates the 2017 prevalence of diabetes mellitus.  </p></br>
+			<div id = 'diabetespre_div' style='width:1200px; height 900px;'></div></br>
+			<p>Interstingly most countries with the higher healthcare expenditure (excluding Switzerland) seem to have a higher prevalence of diabetes. This disease is a predictor for many other health related issues like heart and renal issues. Thus, it may explain the association. </p>
+			</div><!--content-->
+			
+	</div>		
+
+	<div id ="content_footer">
+		<div id = "footer">
+				&copy;<script>var d=new Date(); document.write(d.getFullYear());</script>
+				|<a href='#'>HTML5</a> | <a href="#">CSS</a> | <a href="#">SA</a>
+			</div><!--footer-->
+		</div><!--contentfooter-->
+
+
+
+	<div><!--main-->
+<body>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<title>Project(home)</title>
+	<link rel="stylesheet" type="text/css" href="style/design.css"/>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript">
+	//load the google charts/
+	google.charts.load('current',{'packages':['corechart', 'treemap']});
+	//load the callback function running the page
+	google.charts.setOnLoadCallback(drawAllSheets);
+	
+	
+	function drawAllSheets() {
+		drawSheetName('Compulsory education, yrs', 'SELECT A, N', totaleduGDPResponseHandler);
+		drawSheetName('total edu exp', 'SELECT A, M,N,O,P', totaleduexpResponseHandler);
+		drawSheetName('Compulsory education, yrs', 'SELECT A, J, N', eduexpyearsResponseHandler);
+		drawSheetName('Compulsory education, yrs', 'SELECT A, C, J', eduyearsResponseHandler);
+		drawSheetName('exp on primary', 'SELECT A,I,J,K', primaryexpResponseHandler);
+		drawSheetName('exp on secondary', 'SELECT A,I,J,K', secondaryexpResponseHandler);
+		drawSheetName('exp on tertiary', 'SELECT A,I,J,K', tertiaryexpResponseHandler);
+		}//drawAllSheets
+	
+	
+	function drawSheetName(sheetName, query, responseHandler) {
+		var queryString = encodeURIComponent(query);
+		var query = new google.visualization.Query(
+		'https://docs.google.com/spreadsheets/d/1-u2mVw1SImdi2KQ6HPrVeYDoyxEZ70E1D0nETxWzDJU/gviz/tq?sheet=' +sheetName + '&headers=1&tq=' +queryString);
+		query.send(responseHandler);
+		
+		}//drawsheetname
+	
+	function totaleduGDPResponseHandler(response){
+		var data=response.getDataTable();
+		data.sort({column:1, desc: true});
+		var options = {height:750, title:"Education expenditure in 2012-2015 "};
+		var chart = new google.visualization.GeoChart(document.getElementById('totaleduGDP_div'));
+			
+			chart.draw(data, options);
+	}
+	
+	function totaleduexpResponseHandler(response){
+		var data=response.getDataTable();
+		data.sort({column:3, desc: true});
+		var options = {height:750, title:"Education expenditure in 2012-2015 "};
+		var chart = new google.visualization.ColumnChart(document.getElementById('totaleduexp_div'));
+			
+			chart.draw(data, options);
+	}//totaleduexp
+	
+	
+	
+	function eduyearsResponseHandler(response){
+		var data= response.getDataTable();
+		var options = {
+        highlightOnMouseOver: true,
+        maxDepth: 1,
+        maxPostDepth: 2,
+        minHighlightColor: '#8c6bb1',
+        midHighlightColor: '#9ebcda',
+        maxHighlightColor: '#edf8fb',
+        minColor: '#009688',
+        midColor: '#f7f7f7',
+        maxColor: '#ee8100',
+        headerHeight: 15,
+        showScale: true,
+        height: 750,
+        useWeightedAverageForAggregation: true,
+		generateTooltip: showFullTooltip
+	
+      };
+				var chart = new google.visualization.TreeMap(document.getElementById('compyearsedu_div'));
+			
+		chart.draw(data, options);
+		
+		function showFullTooltip(row, size, value) {
+			return '<div style="background:#fd9; padding:10px; border-style:solid">' +
+				'<span style="font-family:Courier"><b>' + data.getValue(row, 0) +
+				'</b>, ' + data.getValue(row, 1) + ', ' + data.getValue(row, 2) +
+					', '  + '</span><br>' +
+				'Datatable row: ' + row + '<br>' +
+	   data.getColumnLabel(2) +
+           ' (total value of this cell and its children): ' + size + ' </div>';
+  }
+	};
+	
+	function eduexpyearsResponseHandler(response){
+		var data=response.getDataTable();
+		var options = { height: 750, title: 'Correlation between education expenditure and years of compulsory of education' +  'and G20 countries (2012)',
+        hAxis: {title: 'education expenditure'},
+        vAxis: {title: 'years of education'},
+        bubble: {textStyle: {fontSize: 11}}
+      };
+
+      var chart = new google.visualization.BubbleChart(document.getElementById('education_exp_yrs_div'));
+      chart.draw(data, options);
+	
+	}//years and expense
+	
+	function primaryexpResponseHandler(response){
+		var data=response.getDataTable();
+		data.sort({column:3, desc:true});
+		var options = {height:750, title:'Spending on primary education'};
+		var chart = new google.visualization.ColumnChart(document.getElementById('expprimedu_div'));
+			
+		chart.draw(data, options);
+		}
+	
+	function secondaryexpResponseHandler(response){
+		var data=response.getDataTable();
+		data.sort({column:3, desc:true});
+		var options = {height:750, title:'Spending on secondary education'};
+		var chart = new google.visualization.ColumnChart(document.getElementById('expsecondedu_div'));
+			
+		chart.draw(data, options);
+		}
+		
+	function tertiaryexpResponseHandler(response){
+		var data=response.getDataTable();
+		data.sort({column:3, desc:true});
+		var options = {height:750, title:'Spending on tertiary education'};
+		var chart = new google.visualization.ColumnChart(document.getElementById('exptertiaryedu_div'));
+			
+		chart.draw(data, options);
+		}
+	
+	</script
+</head>
+
+<body>
+	<div id="main">
+		<div id="header">
+			<div id="logo">
+				<div id="logo-rectangle">
+					<div id= "logo_text">
+						<h1> The State of the G20<span class='logo_color'></span></h1>
+						<h2> Healthcare, Education and Military Spending in the G20</h2>
+					</div><!--logotext-->
+				</div><!--logo-rectangle-->
+			</div><!--logo-->
+		<div id = "menubar">
+				<ul id="menu">
+					<li><a href="index2.html">Home</a></li>
+					<li><a href="healthcare.html">Healthcare Spending</a></li>
+					<li class='selected'><a href="education.html">Education Spending</a></li>
+					<li><a href="military.html">Military Spending</a></li>
+					<li><a href="combined.html">Insights</a></li>						
+				</ul>
+			</div><!--menubar-->
+		</div><!--header-->
+		
+	<div id = "site_content">
+		<div class = "sidebar">
+			<h3>Data Sources</h3>
+			<ul>
+				<li><a href= "https://datamarket.com/data" class="selected">Datamarket</a></li>
+				<li><a href= "https://data.oecd.org/eduresource/education-spending.html"> Organisation for Economic
+Co-operation and Development</a></li>
+				<li><a href="https://databank.worldbank.org/data/home.aspx">The World Bank</a></li>
+				
+			</ul>
+		</div><!--sidebar-->
+
+		<div id ="content">
+			<h3>Examination of Education Spending Accross the G20</h3>
+			<p>
+				Spending on education is viusalized over the next few graphs. Many factors determine the overall educational spending in a given country, including, GDP, population size, workforce needs
+				and government budget goals for a specific year. 
+			</p>
+			<p>
+				The First graphic examines the overall spending on education, as a percent of the GDP, in the G20 over in 2016. Some of the data is missing as some G20 countries do not report their education spending.  </p></br>
+			<div id='totaleduGDP_div' style='width1200px; height:900px;'></div></br>
+			<p> The trend of educational spending is illustrated over the period spanning 2012-2015.  </p></br>
+			<div id='totaleduexp_div' style='width:1200px; height:900px;'></div></br>	
+			<p>It is interesting to see if the educational spending increases as the number of compulsory education years increases. Evrey country has a different educational system which supports a different number of minimum educational years. 
+			The first graphic clusters the different G20 countries in terms of the number of compulsory education years.</p></br>
+			<div id='compyearsedu_div' style='width:1200px; height:900px;'></div></br>
+			<p>The educational expedniture vs the number of educational years is illustraed in the follwoing bubble chart which does show a trend towards a higher educational spending the higher the number of educational years.</p></br>
+			<div id='education_exp_yrs_div' style='width:1200px; height:900px;'></div></br>
+			<p>The next three graphics indicate the educational spedning on primary, secondary and teriatry education respectively, as a percent of total educational spending. </p>
+			<div id='expprimedu_div' style='width:1200px; height:900px;'></div></br>
+			<div id='expsecondedu_div' style='width:1200px; height:900px;'></div></br>
+			<div id='exptertiaryedu_div' style='width:1200px; height:900px;'></div></br>	
+			<p>The educational spending is almost equally distributed in terms of its division between priamry, secondary and teritaly. A somewhat upwards trend is seen in early education for developing countries as opposed to developed coutnries, which seem to have a higher teritary education. </p>
+			</div><!--content-->
+			
+	</div>		
+
+	<div id ="content_footer">
+		<div id = "footer">
+				&copy;<script>var d=new Date(); document.write(d.getFullYear());</script>
+				|<a href='#'>HTML5</a> | <a href="#">CSS</a> | <a href="#">SA</a>
+			</div><!--footer-->
+		</div><!--contentfooter-->
+
+
+
+	<div><!--main-->
+<body>

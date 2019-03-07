@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<title>Project(home)</title>
+	<link rel="stylesheet" type="text/css" href="style/design.css"/>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript">
+	//load the google charts/
+	google.charts.load('current',{'packages':['corechart']});
+	//load the callback function running the page
+	google.charts.setOnLoadCallback(drawAllSheets);
+		
+	function drawAllSheets() {
+		drawSheetName('mortality rate male', 'SELECT A,J,K,L,N',  hcspendingandmortalityResponseHandler);
+		drawSheetName('Life expectancy at birth', 'SELECT A ,L, O, P', lifeexpectancyResponseHandler);
+		drawSheetName('happiness score', 'SELECT A, D, E, F, G', happinessscoreResponseHandler )
+		}//drawAllSheets
+	
+	
+	function drawSheetName(sheetName, query, responseHandler) {
+		var queryString = encodeURIComponent(query);
+		var query = new google.visualization.Query(
+		'https://docs.google.com/spreadsheets/d/1-u2mVw1SImdi2KQ6HPrVeYDoyxEZ70E1D0nETxWzDJU/gviz/tq?sheet=' +sheetName + '&headers=1&tq=' +queryString);
+		query.send(responseHandler);
+	
+		
+		}//drawsheetname
+		
+	function hcspendingandmortalityResponseHandler(response){
+		var data=response.getDataTable();
+		data.sort({column:4, desc: true});
+		var options = {height:750, title:"Healthcare Spending and Mortality"};
+		var chart = new google.visualization.ColumnChart(document.getElementById('mortalityHC_div'));
+			
+			chart.draw(data, options);
+	}//totaleduexp	
+	
+	function lifeexpectancyResponseHandler(response){
+		var data=response.getDataTable();
+		data.sort({column:1, desc: true});
+		var options = {height:750, title:"Life expectancy as compared to military and healtchare spending, per capita, in USD in 2015"};
+		var chart = new google.visualization.ColumnChart(document.getElementById('lifeexpec_div'));
+			
+			chart.draw(data, options);
+		}
+		
+	function happinessscoreResponseHandler(response){
+		var data=response.getDataTable();
+		data.sort({column:4, desc: true});
+		var options = {height:750, title:"Happiness Score as compared to military, healtchare and Educational spending, per capita, in USD, in 2014"};
+		var chart = new google.visualization.ColumnChart(document.getElementById('happinessscore_div'));
+			
+			chart.draw(data, options);
+		}	
+			
+	</script>	
+</head>
+
+<body>
+	<div id="main">
+		<div id="header">
+			<div id="logo">
+				<div id="logo-rectangle">
+					<div id= "logo_text">
+						<h1> The State of the G20<span class='logo_color'></span></h1>
+						<h2> Healthcare, Education and Military Spending in the G20</h2>
+					</div><!--logotext-->
+				</div><!--logo-rectangle-->
+			</div><!--logo-->
+		<div id = "menubar">
+				<ul id="menu">
+					<li><a href="index2.html">Home</a></li>
+					<li><a href="healthcare.html">Healthcare Spending</a></li>
+					<li><a href="education.html">Education Spending</a></li>
+					<li><a href="military.html">Military Spending</a></li>
+					<li class='selected'><a href="combined.html">Insights</a></li>	
+					
+				</ul>
+			</div><!--menubar-->
+		</div><!--header-->
+		
+	<div id = "site_content">
+		<div class = "sidebar">
+		<h3>Data Sources</h3>
+			<ul>
+			<li><a href="https://databank.worldbank.org/data/home.aspx" class="selected">The World Bank</a></li>
+				<li><a href="https://www.who.int/">The World Health Organization</a></li>
+				<li><a href="https://humanprogress.org/finddata">HumanProgress.org</a></li>
+				<li><a href="https://Worldhappiness.report">World Happiness Report, 2019</a></li>
+				<li><a href="https://www.sipri.org/databases/milex">STOCKHOLM INTERNATIONAL PEACE RESEARCH INSTITUTE, SIPRI</a></li>
+			</ul>
+		</div><!--sidebar-->
+
+		<div id ="content">
+			<h3>Insights gleaned from Health, Military and Educational spending accross the G20</h3>
+			<p>
+				Examining outcomes in terms of health and wellbeing may be interesting when contrasted with spending accross healthcare, military and educational spending. 
+			</p>
+			<p>
+				The few graphics below will examine some health and wellbeing outcomes, namely, life expectance, mortality rate and happiness scores in the different countries accross the G20. </p></br>
+			<p> Starting with the mortality rate for male, female as well as infant mortality, and contrasting that to healthcare spending. </p></br>	
+			<div id='mortalityHC_div' style='width1200px; height:900px;'></div></br>	
+			<p>The mortality rate seems to decrease as healthcare spending increases. The only exception is The United States where there is a higher than expected mortality rate despite a very high per capita helathcare spending. </p></br>
+			<p>Life expectancy is illustrated next and contrasted to bith military and healthcare spending.</p>
+			<div id='lifeexpec_div' style='width1200px; height:900px;'></div></br>
+			<p>Life expectancy over the past decade has been steadily increasing in the developing countries in the G20, thus it is not suprising to see that almost every country has a similar life expecancy despite their healthcare and military spending.</p></br>
+			<p>As a a conclusion let's look at the happiness scores accross the G20 as calculated by the world happiness report group. It appears that happiness is most correlated with educational and healthcare spending. </p></br>
+ 			<div id='happinessscore_div' style='width1200px; height:900px;'></div></br>
+			</div><!--content-->
+			
+	</div>		
+
+	<div id ="content_footer">
+		<div id = "footer">
+				&copy;<script>var d=new Date(); document.write(d.getFullYear());</script>
+				|<a href='#'>HTML5</a> | <a href="#">CSS</a> | <a href="#">SA</a>
+			</div><!--footer-->
+		</div><!--contentfooter-->
+
+
+
+	<div><!--main-->
+<body>

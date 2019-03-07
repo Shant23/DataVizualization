@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<title>Project(home)</title>
+	<link rel="stylesheet" type="text/css" href="style/design.css"/>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript">
+	//load the google charts/
+	google.charts.load('current',{'packages':['corechart']});
+	//load the callback function running the page
+	google.charts.setOnLoadCallback(drawAllSheets);
+	
+	function drawAllSheets() {
+		drawSheetName('population', 'SELECT A, M', populationResponseHandler);
+		drawSheetName('GDP current $', 'SELECT A, E, F, G, H, I, J, K, L, M',totalGDPResponseHandler);
+		drawSheetName('GDP growth', 'SELECT A, K, L, M',growthGDPResponseHandler);
+		drawSheetName('Gross national exp', 'SELECT A, K, L, M', natexpResponseHandler)
+	}//draw all charts, 
+	
+	
+	function drawSheetName(sheetName, query, responseHandler) {
+		var queryString = encodeURIComponent(query);
+		var query = new google.visualization.Query(
+		'https://docs.google.com/spreadsheets/d/1-u2mVw1SImdi2KQ6HPrVeYDoyxEZ70E1D0nETxWzDJU/gviz/tq?sheet=' +sheetName + '&headers=1&tq=' +queryString);
+		query.send(responseHandler);
+		
+		
+		}//drawsheetname
+	
+	
+	function populationResponseHandler(response){
+		var data = response.getDataTable();
+		var options = {
+			height:750, title:"Population in millions of the G20 member countries (2017)", magnifyingGlass: {enable: true, zoomFactor: 5.0}, colorAxis:{colors:['#ADD8E6', '#00008B']}
+						};
+			
+		var chart = new google.visualization.GeoChart(
+			document.getElementById('population_div'));
+			
+			chart.draw(data, options);
+	
+	}//populationResponseeHandler
+	
+	function totalGDPResponseHandler(response){
+	var data=response.getDataTable();
+	data.sort({column:9, desc:true});
+	
+	options = {height: 750};
+		
+	var chart = new google.visualization.ColumnChart(document.getElementById('totalgdp_div'));
+	
+	chart.draw(data, options);
+	} // total GDP
+	
+	function growthGDPResponseHandler(response){
+	var data=response.getDataTable();
+	
+	var options = {height: 750,	legend: 'none',	bars: 'horizontal', hAxis: {title: 'GDP growth'},vAxis: {title: 'Country'}};
+			
+		
+	var chart = new google.visualization.BarChart(document.getElementById('growthgdp_div'));
+	
+	chart.draw(data, options);
+	} // total GDP
+	
+	function natexpResponseHandler(response){
+	var data=response.getDataTable();
+	var options = {height: 750,	legend: 'none',	bars: 'horizontal', hAxis: {title: 'National Expenditure as % of GDP'},vAxis: {title: 'Country'}};
+			
+	var chart = new google.visualization.BarChart(document.getElementById('natexp_div'));
+	
+	chart.draw(data, options);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	</script>
+</head>
+
+<body>
+	<div id="main">
+		<div id="header">
+				
+			<div id="logo">
+				<div id="logo-rectangle">
+					<div id= "logo_text">
+						<h1> The State of the G20<span class='logo_color'></span></h1>
+						<h2> Healthcare, Education and Military Spending in the G20</h2>
+					</div><!--logotext-->
+				</div><!--logo-rectangle-->
+			</div><!--logo-->
+			
+		<div id = "menubar">
+				<ul id="menu">
+					<li class='selected'><a href="index2.html">Home</a></li>
+					<li><a href="healthcare.html">Healthcare Spending</a></li>
+					<li><a href="education.html">Education Spending</a></li>
+					<li><a href="military.html">Military Spending</a></li>
+					<li><a href="combined.html">Insights</a></li>						
+				</ul>
+			</div><!--menubar-->
+		</div><!--header-->
+		
+	<div id = "site_content">
+		<div class = "sidebar">
+			<h3>Data Sources</h3>
+			<ul>
+				<li><a href="https://databank.worldbank.org/data/home.aspx" class="selected">The World Bank</a></li>
+				<li><a href="https://humanprogress.org/finddata">HumanProgress.org</a></li>
+				
+			</ul>	
+		</div><!--sidebar-->
+
+		<div id ="content">
+			<h3>Examination of Education, Healthcare and  Military Spending Accross the G20</h3>
+			<p>
+				This website examines the latest available data on Healthcare, Military and Education spending accross the the worlds richest 20 countries known as the G20. 
+			</p>
+			<p>
+				Many international geopolitical and internal national changes over the past few years have led to a differing expenditure in the three different areas examined. To better understand some of these variables, we will first
+				examine the total population, and gross domestic product or GDP as well as the total national expenditure as a percentage of their GDP.</p>
+			
+			<h3>Population of the G20 in 2017</h3>
+			<div id="population_div" style="width:1200px; height 800px;" ></div></br>
+			<p>The countries that are part of the G20 cover about 60% of the world population.</br>
+			They also are the richest the 20 richest countries as demonstrated below in the graph summarizing the GDP of the member countries.</p></br>
+			
+			<h3>Total GDP of G20 member countries in US dollars</h3>
+			<div id="totalgdp_div" style='width:1200px; height 800px;'></div></br>
+			<p>The G20 member countries have had some sognificant changes in their GDP growth year over year which is apparent int the graph below illustrating the most recent GDP grwoth data.</p></br>
+			
+			<h3>GDP Growth in G20 countries for 2015-2017</h3></br>
+			<p>China, India, Indonesia and Turkey have achieved some of the biggest GDP growth rates, and they currently are considered the biggest emerging markets with strong economies.
+			On another hand, the United States and Europe, have had swings in their overall GDP growth, they have maintained a positive growth overall. The remaining members have had large variations, mainly due to the current 
+			economic situation and tehir nature as emerging economies.</p></br>
+			<div id="growthgdp_div" style='width:1200px; height 750px;'></div></br>
+			
+			<h3>National Expenditure as percent of GDP</h3></br>
+			<div id='natexp_div' style='width:1200px; height 750px;'></div>
+			</div><!--content-->
+			
+	</div>		
+
+	<div id ="content_footer">
+		<div id = "footer">
+				&copy;<script>var d=new Date(); document.write(d.getFullYear());</script>
+				|<a href='#'>HTML5</a> | <a href="#">CSS</a> | <a href="#">SA</a>
+			</div><!--footer-->
+		</div><!--contentfooter-->
+
+
+
+	<div><!--main-->
+<body>

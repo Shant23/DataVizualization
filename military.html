@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<title>Project(home)</title>
+	<link rel="stylesheet" type="text/css" href="style/design.css"/>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript">
+	//load the google charts/
+	google.charts.load('current',{'packages':['corechart']});
+	//load the callback function running the page
+	google.charts.setOnLoadCallback(drawAllSheets);
+	
+	function drawAllSheets() {
+		drawSheetName('military exp dollars', 'SELECT A,K,L,M', militaryexpResponseHandler);
+		drawSheetName('military exp', 'SELECT A,M', militaryexpGDPResponseHandler);
+		drawSheetName('military exp dollars', 'SELECT A,N', militaryavgexpResponseHandler);
+		drawSheetName('military exp dollars', 'SELECT A,N', militaryavgexppieResponseHandler);
+		drawSheetName('per capita mili exp', 'SELECT A,H,I,J', percapitamiliexpResponseHandler);
+		drawSheetName('per capita mili exp', 'SELECT A, K', percapitamiliexpavgResponseHandler);
+		drawSheetName('percapita military trend', 'SELECT A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U', percapitamiliexptrendResponseHandler)
+		}//drawAllSheets
+	
+	
+	function drawSheetName(sheetName, query, responseHandler) {
+		var queryString = encodeURIComponent(query);
+		var query = new google.visualization.Query(
+		'https://docs.google.com/spreadsheets/d/1-u2mVw1SImdi2KQ6HPrVeYDoyxEZ70E1D0nETxWzDJU/gviz/tq?sheet=' +sheetName + '&headers=1&tq=' +queryString);
+		query.send(responseHandler);
+		
+		
+		}//drawsheetname
+		
+	function militaryexpResponseHandler(response){
+		var data = response.getDataTable();
+		data.sort({column:3, desc: true});
+		var options = {	height:750, title:"Military expenditure in 2015-2017 in US Dollars"};
+						
+		var chart = new google.visualization.ColumnChart(
+			document.getElementById('militaryexp_div'));
+			
+			chart.draw(data, options); } //military expense
+		
+	function militaryexpGDPResponseHandler(response){
+		var data = response.getDataTable();
+		var options = {	height:750, title:"Military expenditure in 2017 as percent of the GDP", magnifyingGlass: {enable: true, zoomFactor: 5.0}, colorAxis:{colors: ['#4374e0', '#e7711c']}};
+						
+		var chart = new google.visualization.GeoChart(document.getElementById('militaryexpGDP_div'));
+			
+			chart.draw(data, options); } //military expense
+		
+	function militaryavgexpResponseHandler(response){
+		var data = response.getDataTable();
+		data.sort({column:1, desc: true});
+		var options = {	height:750, title:"Average Military expenditure from 2009-2017 in US Dollars"};
+						
+		var chart = new google.visualization.BarChart(
+			document.getElementById('militaryavgexp_div'));
+			
+			chart.draw(data, options); } //military expense		
+			
+	function militaryavgexppieResponseHandler(response){
+		var data = response.getDataTable();
+		data.sort({column:1, desc: true});
+		var options = {	height:750, title:"Average Military expenditure from 2009-2017 in US Dollars"};
+						
+		var chart = new google.visualization.PieChart(
+			document.getElementById('militaryavgexppie_div'));
+			
+			chart.draw(data, options); } //military expense	
+			
+	function percapitamiliexpResponseHandler(response){
+		var data = response.getDataTable();
+		data.sort({column:3, desc: true});
+		var options = {	height:750, title:"Per Capita Military expenditure in 2015-2017 in US Dollars"};
+						
+		var chart = new google.visualization.ColumnChart(
+			document.getElementById('percapitamiliexp_div'));
+			
+			chart.draw(data, options); } //per capita military expense
+			
+	function percapitamiliexpavgResponseHandler(response){
+		var data = response.getDataTable();
+		data.sort({column:1, desc: true});
+		var options = {	height:750, title:"Average per capita military expenditure from 2009-2017 in US Dollars"};
+						
+		var chart = new google.visualization.BarChart(
+			document.getElementById('percapitamiliavgexp_div'));
+			
+			chart.draw(data, options); } //military expense		
+			
+	function percapitamiliexptrendResponseHandler(response){
+		var data = response.getDataTable();
+		var options = {
+          title: 'Per Capita Military expedniture trends from 2009-2017',
+          curveType: 'function',
+          legend: { position: 'right' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('trend_perCapita_div'));
+
+        chart.draw(data, options);
+	
+	}//military spending trend
+		
+	</script>	
+</head>
+
+<body>
+	<div id="main">
+		<div id="header">
+			<div id="logo">
+				<div id="logo-rectangle">
+					<div id= "logo_text">
+						<h1> The State of the G20<span class='logo_color'></span></h1>
+						<h2> Healthcare, Education and Military Spending in the G20</h2>
+					</div><!--logotext-->
+				</div><!--logo-rectangle-->
+			</div><!--logo-->
+		<div id = "menubar">
+				<ul id="menu">
+					<li><a href="index2.html">Home</a></li>
+					<li><a href="healthcare.html">Healthcare Spending</a></li>
+					<li><a href="education.html">Education Spending</a></li>
+					<li class='selected'><a href="military.html">Military Spending</a></li>
+					<li><a href="combined.html">Insights</a></li>						
+				</ul>
+			</div><!--menubar-->
+		</div><!--header-->
+		
+	<div id = "site_content">
+		<div class = "sidebar">
+			<h3>Data Sources</h3>
+			<ul>
+			<li><a href="https://databank.worldbank.org/data/home.aspx" class="selected">The World Bank</a></li>
+			<li><a href="https://www.sipri.org/databases/milex">STOCKHOLM INTERNATIONAL PEACE RESEARCH INSTITUTE, SIPRI</a></li>
+			</ul>
+		</div><!--sidebar-->
+
+		<div id ="content">
+			<h3>Military Spending Accross the G20</h3>
+			<p>
+				The military expenditure by country is represented in the different visualizations below. The first graphic illustrates the total military spending over the course of 2015-2017 period. 
+			</p></br>
+			<div id='militaryexp_div' style='width:1200px; height:900px;'></div></br>
+			<p>Though in the first graph the United States do spend the highest in terms of dollars, it is not the highest spender in terms of a percentage of the GDP. The map below indicates Saudi Arabia's spending is far higher when takena s a percent of the GDP. </p>
+			<div id='militaryexpGDP_div' style='width:1200px; height:900px;'></div></br>
+			The average military spending is further illustrated below.Military spending is dependant on geopolitical changes which occur regulary over the world. Thus a look at the average military spending over the course of 2009-2017 is studied.
+			<div id='militaryavgexp_div' style='width:1200px; height:900px;'></div></br>
+			The pattern is consistent with the US constituting up to 46% of total military expenditure accross the G20 as illustarted in thepie chart below. 
+			<div id='militaryavgexppie_div' style='width:1200px; height:900px;'></div></br>
+			The per capita military spending does inidcate that Saudi Arabia was the highest spender overall. 
+			<div id='percapitamiliexp_div' style='width:1200px; height:900px;'></div></br>
+			However, averaging per capita spending over the 2009-2017 period indicates that the United States and Saudi Arabia are pretty similar in terms of their per capita spending. 
+			<div id='percapitamiliavgexp_div' style='width:1200px; height:900px;'></div></br>
+			It is clear that Saudi Arabia had an immediate increase in per capita spending and overall spending in 2014-2015 which coincides with the war in Yemen. This is sillustrated in the trend graph below. Almost every other country in the G20 have had a stable spending per capita on their military. 
+			<div id='trend_perCapita_div' style='width:1200px; height:900px;'></div></br>
+			
+			</div><!--content-->
+			
+	</div>		
+
+	<div id ="content_footer">
+		<div id = "footer">
+				&copy;<script>var d=new Date(); document.write(d.getFullYear());</script>
+				|<a href='#'>HTML5</a> | <a href="#">CSS</a> | <a href="#">SA</a>
+			</div><!--footer-->
+		</div><!--contentfooter-->
+
+
+
+	<div><!--main-->
+<body>
